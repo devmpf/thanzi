@@ -10,7 +10,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Mpociot\BotMan\Facebook\Element;
 use Mpociot\BotMan\Facebook\GenericTemplate;
-use Mpociot\BotMan\Facebook\ListTemplate;
 
 class BotManController extends Controller
 {
@@ -39,16 +38,16 @@ class BotManController extends Controller
                 $bot->reply('No Doctor Found');
             }
             else{
-                $list = ListTemplate::create()->useCompactView();
+                $elements = [];
                 foreach ($data->hits->hit as $doctor){
-                    $list->addElement(
+                    array_push($elements,
                         Element::create($doctor->fields->name)
-                        ->subtitle($doctor->fields->qualification)
-                        ->image('http://www.lifeline.ae/lifeline-hospital/wp-content/uploads/2015/02/LLH-Doctors-Male-Avatar-300x300.png')
-                    );
+                            ->subtitle($doctor->fields->qualification)
+                            ->image('http://www.lifeline.ae/lifeline-hospital/wp-content/uploads/2015/02/LLH-Doctors-Male-Avatar-300x300.png')
+                        );
                 }
-                $bot->reply(
-                    $list
+                $bot->reply(GenericTemplate::create()
+                    ->addElements($elements)
                 );
             }
         });
