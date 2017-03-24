@@ -48,6 +48,7 @@ class BotManController extends Controller
                         );
                 }
                 $bot->reply(ListTemplate::create()
+                    ->useCompactView()
                     ->addElements($elements)
                 );
             }
