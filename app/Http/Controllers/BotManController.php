@@ -6,6 +6,9 @@ use App\Conversations\ExampleConversation;
 use Illuminate\Http\Request;
 use Mpociot\BotMan\BotMan;
 
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
+
 class BotManController extends Controller
 {
 	/**
@@ -18,7 +21,15 @@ class BotManController extends Controller
 
         // Simple respond method
         $botman->hears('Hello', function (BotMan $bot) {
-            $bot->reply('Hi there :)');
+            $user = $bot->getUser();
+            $bot->reply('Hello '.$user->getFirstName().' '.$user->getLastName() .':)');
+        });
+
+
+        $botman->hears('Who is {name}', function (BotMan $bot, $name) {
+            $client = new Client();
+            $res = $client->request('GET', 'https://6ujyvhcwe6.execute-api.eu-west-1.amazonaws.com/prod?q='.$name);
+            $bot->reply($res);
         });
 
         $botman->listen();
