@@ -43,6 +43,7 @@ class BotManController extends Controller
                     array_push($elements,
                         Element::create($doctor->fields->name)
                             ->subtitle($doctor->fields->qualification)
+                            ->subtitle("Test")
                             ->image('http://www.lifeline.ae/lifeline-hospital/wp-content/uploads/2015/02/LLH-Doctors-Male-Avatar-300x300.png')
                         );
                 }
