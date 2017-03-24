@@ -35,15 +35,14 @@ class BotManController extends Controller
             $count = $data->hits->found;
 
             if($count == 0){
-                $bot->reply('No Doctor Found');
+                $bot->reply('No Doctor Found with Name or Registration Number '.$name);
             }
             else{
                 $elements = [];
                 foreach ($data->hits->hit as $doctor){
                     array_push($elements,
                         Element::create($doctor->fields->name)
-                            ->subtitle($doctor->fields->qualification)
-                            ->subtitle("Test")
+                            ->subtitle($doctor->fields->qualification.'\n'.'Test')
                             ->image('http://www.lifeline.ae/lifeline-hospital/wp-content/uploads/2015/02/LLH-Doctors-Male-Avatar-300x300.png')
                         );
                 }
