@@ -39,17 +39,16 @@ class BotManController extends Controller
                 $bot->reply('No Doctor Found');
             }
             else{
-                $elements = [];
+                $list = ListTemplate::create()->useCompactView();
                 foreach ($data->hits->hit as $doctor){
-                    array_push($elements,
+                    $list->addElement(
                         Element::create($doctor->fields->name)
-                            ->subtitle($doctor->fields->qualification)
-                            ->image('http://www.lifeline.ae/lifeline-hospital/wp-content/uploads/2015/02/LLH-Doctors-Male-Avatar-300x300.png')
-                        );
+                        ->subtitle($doctor->fields->qualification)
+                        ->image('http://www.lifeline.ae/lifeline-hospital/wp-content/uploads/2015/02/LLH-Doctors-Male-Avatar-300x300.png')
+                    );
                 }
-                $bot->reply(ListTemplate::create()
-                    ->useCompactView()
-                    ->addElements($elements)
+                $bot->reply(
+                    $list
                 );
             }
         });
