@@ -42,7 +42,7 @@ class BotManController extends Controller
                 foreach ($data->hits->hit as $doctor){
                     array_push($elements,
                         Element::create($doctor->fields->name)
-                            ->subtitle($doctor->fields->qualification.chr(10).'Test')
+                            ->subtitle(chr(10).$doctor->fields->qualification.chr(10).chr(10).'Test')
                             ->image('http://www.lifeline.ae/lifeline-hospital/wp-content/uploads/2015/02/LLH-Doctors-Male-Avatar-300x300.png')
                         );
                 }
