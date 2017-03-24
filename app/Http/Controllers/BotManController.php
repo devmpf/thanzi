@@ -8,6 +8,8 @@ use Mpociot\BotMan\BotMan;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Mpociot\BotMan\Facebook\Element;
+use Mpociot\BotMan\Facebook\GenericTemplate;
 
 class BotManController extends Controller
 {
@@ -29,10 +31,40 @@ class BotManController extends Controller
         $botman->hears('Who is {name}', function (BotMan $bot, $name) {
             $client = new Client();
             $res = $client->request('GET', 'https://6ujyvhcwe6.execute-api.eu-west-1.amazonaws.com/prod?q='.$name);
-            $bot->reply($res);
+            $data = json_decode($res->getBody());
+            $count = $data->hits->found;
+
+            if($count == 0){
+                $bot->reply('No Doctor Found');
+            }
+            else{
+                $elements = [];
+                foreach ($data->hits->hit as $doctor){
+                    array_push($elements,
+                        Element::create($doctor->fields->name)
+                            ->subtitle($doctor->fields->qualification)
+                            ->image('http://www.lifeline.ae/lifeline-hospital/wp-content/uploads/2015/02/LLH-Doctors-Male-Avatar-300x300.png')
+                        );
+                }
+                $bot->reply(GenericTemplate::create()
+                    ->addElements($elements)
+                );
+            }
         });
 
         $botman->listen();
+    }
+
+    public function test(Request $request)
+    {
+        $name = $request->input('name');
+        $client = new Client();
+        $res = $client->request('GET', 'https://6ujyvhcwe6.execute-api.eu-west-1.amazonaws.com/prod?q='.$name);
+        $data = json_decode($res->getBody());
+        $count = $data->hits->found;
+        dd($data);
+
+
     }
 
     /**
