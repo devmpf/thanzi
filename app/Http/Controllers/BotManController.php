@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Mpociot\BotMan\Facebook\Element;
 use Mpociot\BotMan\Facebook\GenericTemplate;
+use Mpociot\BotMan\Facebook\ListTemplate;
 
 class BotManController extends Controller
 {
@@ -46,7 +47,7 @@ class BotManController extends Controller
                             ->image('http://www.lifeline.ae/lifeline-hospital/wp-content/uploads/2015/02/LLH-Doctors-Male-Avatar-300x300.png')
                         );
                 }
-                $bot->reply(GenericTemplate::create()
+                $bot->reply(ListTemplate::create()
                     ->addElements($elements)
                 );
             }
